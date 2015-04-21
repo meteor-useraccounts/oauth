@@ -1,0 +1,2 @@
+capitalize = undefined;
+UALog = undefined;
