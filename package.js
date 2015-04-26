@@ -47,6 +47,9 @@ Package.onUse(function(api) {
   ], Client);
 
   api.addFiles([
+    'src/templates/ua_oauth.html',
+    'src/templates/ua_oauth_btn.html',
+    'src/templates/ua_oauth_btn.css',
     'src/utils.js',
     'src/events.js',
   ], Client);

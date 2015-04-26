@@ -47,6 +47,20 @@ UAOAuth.prototype.icons = {
   'meteor-developer': 'fa fa-rocket'
 };
 
+UAOAuth.prototype.texts = {
+	default: {
+		prefix: 'Login with',
+		suffix: '',
+	},
+	signIn: {
+		prefix: 'Login with',
+		suffix: '',
+	},
+	signUp: {
+		prefix: 'Register with',
+		suffix: '',
+	},
+};
 
 UAOAuth.prototype.loginOptions = {};
 
@@ -69,7 +83,7 @@ UAOAuth.prototype.services = function() {
         name: self.getName(name),
         btnClasses: self.skinClasses('button'),
         template: self.getBtnTemplate(name),
-        text: self.getText(name),
+        text: self.getBtnText(name),
       };
     })
     .sortBy('_id')
@@ -99,15 +113,18 @@ UAOAuth.prototype.getName = function(service) {
 };
 
 
-UAOAuth.prototype.getText = function(service) {
-  // console.log('text');
-  // console.dir(service);
+UAOAuth.prototype.getBtnText = function(service) {
+  var
+    self = this,
+    prefix = self.getText('prefix'),
+    suffix = self.getText('suffix')
+  ;
+
   if (service === 'meteor-developer') {
     service = 'meteor';
   }
-  var action = 'Log in With';
 
-  return action + ' ' + capitalize(service);
+  return prefix + ' ' + capitalize(service) + ' ' + suffix;
 };
 
 UserAccounts._modules.oauth = new UAOAuth();
