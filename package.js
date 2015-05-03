@@ -25,6 +25,7 @@ Package.onUse(function(api) {
   api.use([
     'service-configuration',
     'jag:pince@0.0.5',
+    'underscore',
     'useraccounts:core@2.0.0'
   ], Both);
 

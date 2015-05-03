@@ -22,6 +22,7 @@ function UAOAuth() {
   this.loginStyle = 'popup';
   this.position = 30;
   this.template = 'uaOauth';
+  this.templateClass = 'oauth';
   this.btnTemplate = 'uaOAuthBtn';
   this.visible = true;
 }
@@ -30,101 +31,99 @@ function UAOAuth() {
 // inherit UAModule
 UAOAuth.prototype = new UAModule();
 
+_.extend(UAOAuth.prototype, {
 
-// correct the constructor pointer because it points to UAModule
-UAOAuth.prototype.constructor = UAOAuth;
+  // correct the constructor pointer because it points to UAModule
+  constructor: UAOAuth,
 
+  configure: function(options) {
+    // UALog.trace('configure ' + this._id);
+    // console.log(options);
 
-UAOAuth.prototype.configure = function(options) {
-  // UALog.trace('configure ' + this._id);
-  // console.log(options);
+    // TODO: pick up oauth options here
+  },
 
-  // TODO: pick up oauth options here
-};
+  icons: {
+    'meteor-developer': 'fa fa-rocket'
+  },
 
+  texts: {
+    default: {
+      prefix: 'Login with',
+      suffix: '',
+    },
+    signIn: {
+      prefix: 'Login with',
+      suffix: '',
+    },
+    signUp: {
+      prefix: 'Register with',
+      suffix: '',
+    },
+  },
 
-UAOAuth.prototype.icons = {
-  'meteor-developer': 'fa fa-rocket'
-};
+  loginOptions: {},
 
-UAOAuth.prototype.texts = {
-	default: {
-		prefix: 'Login with',
-		suffix: '',
-	},
-	signIn: {
-		prefix: 'Login with',
-		suffix: '',
-	},
-	signUp: {
-		prefix: 'Register with',
-		suffix: '',
-	},
-};
+  services: function() {
+    UALog.trace('services');
+    var self = this;
 
-UAOAuth.prototype.loginOptions = {};
+    if (!Accounts.loginServicesConfigured()) {
+      return;
+    }
 
+    var services = _.chain(Accounts.loginServiceConfiguration.find().fetch())
+      .map(function(service) {
+        var name = service.service;
+        return {
+          _id: name,
+          icon: self.getIcon(name),
+          disabled: self.getDisabled(name),
+          name: self.getName(name),
+          btnClasses: self.skinClasses('button'),
+          template: self.getBtnTemplate(name),
+          text: self.getBtnText(name),
+        };
+      })
+      .sortBy('_id')
+      .value();
 
-UAOAuth.prototype.services = function() {
-  UALog.trace('services');
-  var self = this;
+    return services;
+  },
 
-  if (!Accounts.loginServicesConfigured()) {
+  getBtnTemplate: function(service) {
+    return this.btnTemplate;
+  },
+
+  getDisabled: function(service) {
     return;
-  }
+  },
 
-  var services = _.chain(Accounts.loginServiceConfiguration.find().fetch())
-    .map(function(service) {
-      var name = service.service;
-      return {
-        _id: name,
-        icon: self.getIcon(name),
-        disabled: self.getDisabled(name),
-        name: self.getName(name),
-        btnClasses: self.skinClasses('button'),
-        template: self.getBtnTemplate(name),
-        text: self.getBtnText(name),
-      };
-    })
-    .sortBy('_id')
-    .value();
+  getIcon: function(service) {
+    return this.icons[service] || 'fa fa-' + service;
+  },
 
-  return services;
-};
+  getName: function(service) {
+    return service;
+  },
 
+  getBtnText: function(service) {
+    var
+      self = this,
+      prefix = self.getText('prefix'),
+      suffix = self.getText('suffix')
+    ;
 
-UAOAuth.prototype.getBtnTemplate = function(service) {
-  return this.btnTemplate;
-};
+    if (service === 'meteor-developer') {
+      service = 'meteor';
+    }
 
-
-UAOAuth.prototype.getDisabled = function(service) {
-  return;
-};
+    return prefix + ' ' + capitalize(service) + ' ' + suffix;
+  },
+});
 
 
-UAOAuth.prototype.getIcon = function(service) {
-  return this.icons[service] || 'fa fa-' + service;
-};
-
-
-UAOAuth.prototype.getName = function(service) {
-  return service;
-};
-
-
-UAOAuth.prototype.getBtnText = function(service) {
-  var
-    self = this,
-    prefix = self.getText('prefix'),
-    suffix = self.getText('suffix')
-  ;
-
-  if (service === 'meteor-developer') {
-    service = 'meteor';
-  }
-
-  return prefix + ' ' + capitalize(service) + ' ' + suffix;
-};
-
-UserAccounts._modules.oauth = new UAOAuth();
+UALog.trace('Adding oauth module');
+var oauth = new UAOAuth();
+UserAccounts._modules.oauth = oauth;
+UserAccounts.oauth = oauth;
