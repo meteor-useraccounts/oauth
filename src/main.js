@@ -77,7 +77,7 @@ _.extend(UAOAuth.prototype, {
         var name = service.service;
         return {
           _id: name,
-          icon: self.getIcon(name),
+          icon: self.getIcon(name) + ' ' + self.skinClasses('icon'),
           disabled: self.getDisabled(name),
           name: self.getName(name),
           btnClasses: self.skinClasses('button'),
