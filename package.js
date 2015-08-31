@@ -24,7 +24,7 @@ Package.onUse(function(api) {
   // Logger
   api.use([
     'service-configuration',
-    'jag:pince@0.0.5',
+    'jag:pince@0.0.9',
     'underscore',
     'useraccounts:core@2.0.0'
   ], Both);
