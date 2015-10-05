@@ -1,5 +1,6 @@
 <template name="uaOAuthBtn">
-  <button class="{{btnClasses}} {{disabled}} {{name}} ua-oauth-btn" name="{{_id}}">
-    <i class="{{icon}}"></i> {{text}}
+  <button class="{{module.skinClasses 'button'}} {{module.getDisabled name}} {{name}} ua-oauth-btn" name="{{_id}}">
+    <i class="{{module.getIcon name}} {{module.skinClasses 'icon'}}"></i>
+    {{module.getText 'btn' _id}}
   </button>
 </template>
