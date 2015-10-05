@@ -15,10 +15,10 @@ Package.describe({
   name: 'useraccounts:oauth',
   summary: 'UserAccounts oauth package.',
   version: '2.0.0',
-  git: 'https://github.com/meteor-useraccounts/oauth.git'
+  git: 'https://github.com/meteor-useraccounts/oauth.git',
 });
 
-Package.onUse(function(api) {
+Package.onUse(function pkgOnUse(api) {
   api.versionsFrom('1.0');
 
   // Logger
@@ -26,7 +26,7 @@ Package.onUse(function(api) {
     'service-configuration',
     'jag:pince@0.0.9',
     'underscore',
-    'useraccounts:core@2.0.0'
+    'useraccounts:core@2.0.0',
   ], Both);
 
   api.imply([
@@ -34,24 +34,21 @@ Package.onUse(function(api) {
     'useraccounts:core',
   ], Both);
 
-
-  // Base Class instantiation
-  api.addFiles([
-    'src/_globals.js',
-    'src/logger.js',
-    'src/main.js'
-  ], Both);
-
-
   api.use([
     'templating',
   ], Client);
 
   api.addFiles([
+    'src/texts.js',
     'src/templates/ua_oauth.html',
     'src/templates/ua_oauth_btn.html',
     'src/templates/ua_oauth_btn.css',
-    'src/utils.js',
-    'src/events.js',
   ], Client);
+
+  api.addFiles([
+    'src/_globals.js',
+    'src/logger.js',
+    'src/modules/oauth_module.js',
+    'src/main.js',
+  ], Both);
 });
