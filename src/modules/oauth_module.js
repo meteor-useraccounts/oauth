@@ -22,11 +22,12 @@ UAOAuthModule = function _UAOAuthModule() {
   UAModule.call(self);
 
   self._id = 'oauth';
+  self.btnTemplate = 'uaOAuthBtn';
   self.loginStyle = 'popup';
   self.position = 30;
+  self.skins = {};
   self.template = 'uaOauth';
   self.templateClass = 'oauth';
-  self.btnTemplate = 'uaOAuthBtn';
   self.visible = true;
 };
 
@@ -169,6 +170,7 @@ _.extend(UAOAuthModule.prototype, {
    */
   getIcon: function getIcon(service) {
     var self = this;
+
     UALog.trace('UAOAuthModule.getIcon');
 
     return self.icons[service];
